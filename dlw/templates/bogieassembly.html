@@ -1,0 +1,894 @@
+{% extends 'base.html' %}
+{% block content %}
+<html lang="en">
+        <head>
+                <script>
+                   $(document).ready(function () {
+                        $('#date').datepicker({
+                            dateFormat: 'dd-mm-yy'
+                        });
+                    });
+                </script>
+                    <script>
+                    $(document).ready(function () {
+                            $('#out_qty').datepicker({
+                                dateFormat: 'dd-mm-yy'
+                            });
+                        });
+                    </script>
+                    <script>
+                            $(document).ready(function () {
+                                    $('#editout_qty').datepicker({
+                                        dateFormat: 'dd-mm-yy'
+                                    });
+                                });
+                            </script>
+                <script>
+                        $(document).ready(function () {
+                             $('#editdate').datepicker({
+                                 dateFormat: 'dd-mm-yy'
+                             });
+                         });
+                </script>
+<script>
+                        $(document).ready(function () {
+                             $('#in_date').datepicker({
+                                 dateFormat: 'dd-mm-yy'
+                             });
+                             $('#editin_date').datepicker({
+                                 dateFormat: 'dd-mm-yy'
+                             });
+                         });
+                </script>
+<script>
+            $(document).ready(function () {
+                $('#dispatch_date').datepicker({
+                    dateFormat: 'dd-mm-yy'
+                });
+            });
+        </script>
+        </head>    
+   
+    <style>
+        #customers {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+        
+        #customers td,
+        #customers th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+    
+    </style>
+<style>
+@import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    height:100%;
+    margin:0;
+}
+html{
+    height:100%;
+    margin:0;
+}
+.page-content{
+    min-height:100%;
+    margin-bottom:-40px;
+}
+.page-content::after{
+    content:"";
+    display:block;
+}
+footer, .page-content::after{
+    height:40px;
+}
+.content_section{
+    width:60%;
+}
+</style>
+    <form action="." id="myForm" method="POST" novalidate>{% csrf_token %}
+
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+            <ul class="navbar nav" style="width:60%">
+                <font size="4pt" color="#FFFFFF">Final Bogie Assembly</font>
+            </ul>
+    
+            <div class="collapse navbar-collapse" id="collapse_target">
+                <ul class="navbar nav" style="width:100%;">
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#DeleteModal" style="background: none;font-size: 12pt;margin-Top:2%;margin-left: 2% ">
+                                <font color="white">Delete</font>
+                         </button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#DispatchModal" style="background: none;font-size: 12pt;margin-Top:2%;margin-left: 2% ">
+                                <font color="white">Dispatch</font>
+                         </button>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="btn btn-primary" data-toggle="dropdown" role="button"
+                            aria-haspopup="true" aria-expanded="false"  style="background: none;font-size: 12pt;margin-Top:2%;margin-left: 2% "><font color="white">Inspect</font></a>
+                        <ul class="dropdown-menu">
+                            <li><button type="button" class="btn btn" data-toggle="modal" data-target="#inspectmodal">Inspect</button></li>
+                            <li><button type="button" class="btn btn" data-toggle="modal" data-target="#inspectmodalhhp">Inspect HHP</button></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1" style="background: none;font-size: 12pt;margin-Top:2%;margin-left: 2% ">
+                                <font color="white">EditRecord</font>
+                     </button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="background: none;font-size: 12pt;margin-Top:2%;margin-left: 2% ">
+                        <font color="white">AddRecord</font>
+                     </button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+<table id="customers">
+            <tbody>
+                <tr>
+                        <center>
+                                {% if messages %}
+                                <ul class="messages">
+                                    {% for message in messages %}
+                                    <font size="3">
+                                        <li>
+                                           <h4>{{ message }}</h4>
+                                        </li>
+                                    </font>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </center>
+                </tr>
+                <tr>
+                <th>Serial No.</th>
+                <th>Batch Order No.</th>
+                <th>Part No. &nbsp;</th>
+                <th>Batch Qty &nbsp;</th>
+                <th>Batch Order Date &nbsp;</th>
+                <th>Loco Type </th>
+                <th>Date &nbsp;</th>
+                <th>Frame Serial No &nbsp;</th>
+                <th>Frame Make &nbsp;</th>
+                <th>Frame Type &nbsp;</th>
+                <th>Machine In Date &nbsp; </th>
+                <th>Machine Out Date &nbsp; </th>
+                <th>Dispatch To &nbsp; </th>
+                <th>Dispatch Date &nbsp; </th>
+                </tr>
+                {% for objec in object %}
+                <tr>
+                <td>{{objec.sno}} <br><br></td>
+                <td>{{objec.bo_no}} <br><br></td>
+                <td>{{objec.pt_no}} <br><br></td>
+                <td>{{objec.bo_qty}} <br><br></td>
+                <td>{{objec.bo_date}} <br><br></td>
+                <td>{{objec.loco_type}} <br><br></td>
+                <td>{{objec.date}} <br><br></td>
+                <td>{{objec.frameserial_no}} <br><br></td>
+                <td>{{objec.frame_make}} <br><br></td>
+                <td>{{objec.frame_type}} <br><br></td>
+                <td>{{objec.in_date}} <br><br></td>
+                <td>{{objec.out_qty}} <br><br></td>
+                <td>{{objec.dispatch_to}} <br><br></td>
+                <td>{{objec.dispatch_date}} <br><br></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>   
+
+        <input type="hidden" name="once" id="once" value="0">
+        
+<!-- AddRecord -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Bogie Assembly</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form method="POST" class="needs-validation" > {% csrf_token %}
+      <div class="modal-body">       
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="">Batch Order No.</label>
+                                    <select name="bo_no" id="addbono" class="form-control ll" required>
+                                            <option value="" hidden selected>Select BO No.</option>  
+                                            {% for x in mybo %}
+                                            <option>{{x.bo_no}}</option>
+                                            {% endfor %}
+                                    </select> 
+                                        </div>
+                                        <div class="col-6">
+                                                <h6><label for="">Batch Order Date</label></h6>
+                                                <input type="text" class="form-control" name="bo_date" id="bo_date" required readonly>
+                                        </div>
+                                        </div>
+                                        <div class="row">
+                                        <div class="col-6">
+                                            <label>Part No.</label>
+                                                <input type="text" class="form-control" name="pt_no" id="pt_no" required readonly>
+                                                </div>
+                                    <div class="col-6">
+                                        <label>Batch Qty</label>
+                                        <input type="text" class="form-control" name="bo_qty" id="bo_qty" required readonly>
+                                    </div>
+                                    </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h6><label for="">Loco Type</label></h6>
+                                                <input type="text" class="form-control" name="locos" id="locos" required readonly>
+                                            </div>
+                                       <div class="col-6">
+                                            <label for="">Date</label>
+                                            <input type="text" name="date" id="date" class="form-control" placeholder="dd-mm-yyyy" required readonly>
+                                      </div>
+                                   </div>
+                                    
+                                        <div class="row">
+                                                <div class="col-6">
+                                                        <label for="">Machine In Date</label>
+                                                        <input type="text" name="in_date" id="in_date" class="form-control" placeholder="dd-mm-yyyy" readonly>
+                                          
+                                                </div>
+                                                <div class="col-6">
+                                                    <label for="">Machine Out Date</label>
+                                                    <input type="text" class="form-control" name="out_qty" id="out_qty" placeholder="dd-mm-yyyy" readonly>
+                                                </div>
+                                            </div>
+
+                                <div class="row">   
+                                <div class="col-6">
+                                    <label for="">Frame Make</label>
+                                    <input type="text" name="frame_make" id="frame_make" class="form-control" placeholder="" maxlength="20" required>
+                              
+                                </div> 
+                                <div class="col-6">
+                                        <label for="">Frame Type</label>
+                                        <select name="frame_type" id="frame_type" class="form-control ll" required >
+                                          <option value="" hidden selected>Select Frame Type.</option>
+                                            <option>Front</option>
+                                            <option>Rear</option>
+                                        </select>
+                                </div> 
+                                </div>
+                                <div class="row">
+                                        <div class="col-6">
+                                            <label for="">Frame Serial No.</label>
+                                            <input type="text" name="frameserial_no" id="frameserial_no" class="form-control" placeholder="" maxlength="10" required>
+                                      
+                                    </div> 
+                                    </div>
+
+                        </div>
+                        
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <input type="submit" name="submit" class="btn btn-primary"  id="savebtn" value="Save" />
+          </div>
+          </form>
+          </div>
+          </div>
+          </div>
+
+
+<!--EditRecord-->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Bogie Assembly</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+        </div>
+     
+        <form method="POST" class="needs-validation" > {% csrf_token %}
+        <div class="modal-body"> 
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="">S No.</label>
+                                    <select name="editsno" id="editsno" class="form-control ll" required>
+                                        <option value="" hidden selected>Select S No.</option>  
+                                        {% for y in mysno %}
+                                        <option>{{y.sno}}</option>
+                                        {% endfor %}
+                                </select> 
+                                </div>
+
+                                <div class="col-6">
+                                    <h6><label for="">Batch Order No.</label></h6>
+                                    <input type="text" class="form-control" name="editbo_no" id="editbo_no" required readonly>
+                                </div>
+                                        <div class="col-6">
+                                            <h6><label for="">Batch Order Date</label></h6>
+                                            <input type="text" class="form-control" name="editbo_date" id="editbo_date" required readonly>
+                                        </div>
+                                    
+                                            <div class="col-6">
+                                                    <h6><label>Part No.</label></h6>
+                                                    <input type="text" class="form-control" name="editpt_no" id="editpt_no" required readonly>
+                                            </div>
+                                            <div class="col-6">
+                                                    <h6><label>Batch Qty</label></h6>
+                                                    <input type="text" class="form-control" name="editbo_qty" id="editbo_qty" required readonly>
+                                            </div>
+                                         <div class="col-6">
+                                                <h6><label for="">Loco Type</label></h6>
+                                                <input type="text" class="form-control" name="editlocos" id="editlocos" required readonly>
+                                            </div>
+                                            <div class="col-6">
+                                                    <label for="">Date</label>
+                                                    <input type="text" name="editdate" id="editdate" class="form-control" placeholder="dd-mm-yyyy" required readonly>
+                                            </div>
+
+                                    <div class="col-6">
+                                            <label for="">Machine In date</label>
+                                            <input type="text" class="form-control" name="editin_date" id="editin_date" placeholder="dd-mm-yyyy" readonly>
+                                    </div>
+
+                                            <div class="col-6">
+                                                <label for="">Machine Out Date</label>
+                                                <input type="text" class="form-control" name="editout_qty" id="editout_qty" placeholder="dd-mm-yyyy" readonly>
+                                            </div>
+
+                                    <div class="col-6">
+                                        <label for="">Frame Serial No.</label>
+                                        <input type="text" class="form-control" name="editframeserial_no" id="editframeserial_no" maxlength="10" required>
+                                    </div>   
+                                    <div class="col-6">
+                                        <label for="">Frame Make</label>
+                                        <input type="text" class="form-control" name="editframe_make" id="editframe_make" maxlength="20" required>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="">Frame Type</label>
+                                        <select name="editframe_type" id="editframe_type" class="form-control ll" required >
+                                            <option>Front</option>
+                                            <option>Rear</option>
+                                        </select>
+                                </div> 
+                                </div>  
+                </div>                      
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <input type="submit" name="submit" class="btn btn-primary"  id="editsavebtn" value="Edit" />
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+<!--Delete-->
+<!-- Modal -->
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel3">BogieAssembly</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+  <form method="POST" class="needs-validation" > {% csrf_token %}
+         <div class="modal-body">
+                  <div class="row">
+                      <div class="col">
+                              <label for="">Serial No.</label>
+                              <input type="number" class="form-control" id="delsno" name="delsno"  required>
+                      </div> 
+                  </div>
+          </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <input type="submit" name="submit" class="btn btn-primary"  id="delsavebtn" value="Delete">
+      </div>
+      </form>
+  </div>
+</div>
+</div>   
+ <!--Dispatch-->
+    <!-- Modal -->
+    <div class="modal fade" id="DispatchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel2">Bogie Assembly</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form method="POST" class="needs-validation" > {% csrf_token %}
+             <div class="modal-body">       
+                                    <div class="row">
+                                      <div class="col-6">
+                                        <label for="">Serial No.</label>
+                                        <select name="dissno" id="dissno" class="form-control ll" required>
+                                                <option value="" hidden selected>Select S.No.</option>  
+                                                {% for x in mysno %}
+                                                <option>{{x.sno}}</option>
+                                                {% endfor %}
+                                        </select> 
+                                </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                    <div class="col-6">
+                                            <label for="">Dispatch Date(Manually)</label>
+                                            <input type="text" name="dispatch_date" id="dispatch_date" class="form-control" placeholder="dd-mm-yyyy" required readonly>
+                                      </div>
+                                </div><br>
+                                    
+                                   <div class="col">
+                                    <div class="dropdown">
+                                      <select style="width : 300px;"  name="dislocos" type="form-control ll" required>
+                                        <option value="" hidden selected>Dispatch To</option>
+                                        <option value="Bogie Assembly">Paint Shop</option>
+                                      </select>
+                                      </div>
+                                    </div>  
+                                    
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                      <input type="submit" name="submit" class="btn btn-primary"  id="dissavebtn" value="Dispatch" >
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                     </div>    
+<!--inspect hhp-->
+<!--modal-->
+<div class="modal fade bd-example-modal-lg" id="inspectmodalhhp" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Bogie Assembly Inspection</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidde
+        n="true">&times;</span>
+      </button>
+            </div>
+        
+            <form method="POST" class="needs-validation" > {% csrf_token %}
+
+            <div class="modal-body">
+                  <div class="row">
+                  <div class="col-6">
+                          <label for="">Select Serial No.</label>
+                          <select name="sno" id="hhpaddsno" class="form-control ll" required>
+                                  <option value="" hidden selected>Select S.No.</option>  
+                                  {% for x in hhpmysno %}
+                                  <option>{{x.sno}}</option>
+                                  {% endfor %}
+                          </select> 
+                  </div>
+                  </div>
+                
+                <div class="row">
+                        <div class="col-6">
+                                <label for="">Axle No.</label>
+                                <select name="axle_no" id="hhpaxle_no" class="form-control ll" required>
+                                    <option value="" hidden selected>Select Axle No.</option>  
+                                    {% for y in myaxle %}
+                                    <option>{{y.axle_no}}</option>
+                                    {% endfor %}
+                            </select>  
+                            </div>
+                              <div class="col-6">
+                                    <label for="Axle">Axle Location</label>
+                                    <select name="axle_location" id="hhpaxle_location" class="form-control ll" required >
+                                      <option value="" hidden selected>Select Axle Location.</option> 
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                    </select>
+                                  </div>  
+                                  <div class="col-6">
+                                    <label for="">Traction motor no. </label>
+                                    <select name="tm_no" id="hhptm_no" class="form-control ll" required>
+                                        <option value="" hidden selected>Select Traction Motor No.</option>  
+                                        {% for z in mytm %}
+                                        <option>{{z.tm_no}}</option>
+                                        {% endfor %}
+                                </select>    
+                                </div>
+                                  <div class="col-6">
+                                    <label for="">Gear Case No. </label>
+                                    <input type="text" class="form-control" name="gear_case_no" id="hhpgear_case_no" placeholder="" maxlength="20" required>
+                                  </div>
+                                  <div class="col-6">
+                                    <label for="">Gear Case make </label>
+                                    <input type="text" class="form-control" name="gear_case_make" id="hhpgear_case_make" placeholder="" maxlength="20" required>
+                                  </div>          
+                                  <div class="col-6">
+                                    <label for="">MSU unit no. </label>
+                                    <select name="msu_unit_no" id="hhpmsu_unit_no" class="form-control ll" required>
+                                        <option value="" hidden selected>Select MSU Unit No.</option>  
+                                        {% for a in mymsu %}
+                                        <option>{{a.msu_unit_no}}</option>
+                                        {% endfor %}
+                                </select>
+                                </div>                    
+                                  <div class="col-6">
+                                    <label for=""> Break Rigging make</label>
+                                    <input type="text" class="form-control" name="break_rigging_make" id="hhpbreak_rigging_make" placeholder="" maxlength="20" required>
+                                  </div>
+                                  <div class="col-6">
+                                    <label for="">Coil Spring make</label>
+                                    <input type="text" class="form-control" name="coil_spring_make" id="hhpcoil_spring_make" placeholder="" maxlength="20" required>
+                                  </div>
+                                  <div class="col-6">
+                                    <label for="">Secondary Coil Spring make</label>
+                                    <input type="text" class="form-control" name="secondary_coil_make" id="hhpsecondary_coil_make" placeholder="" maxlength="20" required>
+                                  </div> 
+                                  <div class="col-6">
+                                    <label for="">Sand Box make</label>
+                                    <input type="text" class="form-control" name="sand_box_make" id="hhpsand_box_make" placeholder="" maxlength="20" required>
+                                  </div>   
+                                  <div class="col-6">
+                                    <label for="">Spheri Block make</label>
+                                    <input type="text" class="form-control" name="spheri_block_make" id="hhpspheri_block_make" placeholder="" maxlength="20" required>
+                                  </div>
+                                  <div class="col-6">
+                                    <label for="">Elastic Shop make</label>
+                                    <input type="text" class="form-control" name="elastic_shop_make" id="hhpelastic_shop_make" placeholder="" maxlength="30" required>
+                                  </div>
+                                  <div class="col-6">
+                                    <label for="">Thrust Pad Make</label>
+                                    <input type="text" class="form-control" name="thrust_pad_make" id="hhpthrust_pad_make" placeholder="" maxlength="20" required>
+                                  </div>
+                                  <div class="col-6">
+                                    <label for="">Break Cylinder Make</label>
+                                    <input type="text" class="form-control" name="break_cylinder_make" id="hhpbreak_cylinder_make" placeholder="" maxlength="20" required>
+                                  </div>
+                                  <div class="col-6">
+                                    <label for="">Lateral Damper</label>
+                                    <input type="text" class="form-control" name="lateral_damper" id="hhplateral_damper" placeholder="" maxlength="20" required>
+                                  </div>       
+                </div>
+            </div>                        
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                             <input type="submit" name="submit" class="btn btn-primary" id="savebtn" value="InspectHHP" />
+                        </div>
+              </form>
+     </div>
+ </div>
+</div> 
+<!--inspect-->
+<!--modal-->
+<div class="modal fade bd-example-modal-lg" id="inspectmodal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Bogie Assembly Inspection</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+            </div>
+        
+            <form method="POST" class="needs-validation" > {% csrf_token %}
+
+            <div class="modal-body">
+                  <div class="row">
+                  <div class="col-6">
+                          <label for="">Serial No.</label>
+                          <select name="sno" id="addsno" class="form-control ll" required>
+                                  <option value="" hidden selected>Select S.No.</option>  
+                                  {% for x in mysno %}
+                                  <option>{{x.sno}}</option>
+                                  {% endfor %}
+                          </select> 
+                  </div>
+                  </div>
+                
+                <div class="row">
+                    <div class="col-6">
+                        <label for="">Axle No.</label>
+                        <select name="axle_no" id="axle_no" class="form-control ll" required>
+                            <option value="" hidden selected>Select Axle No.</option>  
+                            {% for y in myaxle %}
+                            <option>{{y.axle_no}}</option>
+                            {% endfor %}
+                    </select>  
+                    </div>
+                              <div class="col-6">
+                                    <label for="Axle">Axle Location</label>
+                                    <select name="axle_location" id="axle_location" class="form-control ll" required >
+                                      <option value="" hidden selected>Select Axle Location.</option> 
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                    </select>
+                                  </div>  
+                                  <div class="col-6">
+                                    <label for="">Traction motor no. </label>
+                                    <select name="tm_no" id="tm_no" class="form-control ll" required>
+                                        <option value="" hidden selected>Select Traction Motor No.</option>  
+                                        {% for z in mytm %}
+                                        <option>{{z.tm_no}}</option>
+                                        {% endfor %}
+                                </select>    
+                                </div>
+                                  <div class="col-6">
+                                    <label for="">Gear Case No. </label>
+                                    <input type="text" class="form-control" name="gear_case_no" id="gear_case_no" placeholder="" maxlength="20" required>
+                                  </div>
+                                  <div class="col-6">
+                                    <label for="">Gear Case make </label>
+                                    <input type="text" class="form-control" name="gear_case_make" id="gear_case_make" placeholder="" maxlength="20" required>
+                                  </div>          
+                                  <div class="col-6">
+                                    <label for="">MSU unit no. </label>
+                                    <select name="msu_unit_no" id="msu_unit_no" class="form-control ll" required>
+                                        <option value="" hidden selected>Select MSU Unit No.</option>  
+                                        {% for a in mymsu %}
+                                        <option>{{a.msu_unit_no}}</option>
+                                        {% endfor %}
+                                  </select>
+                                  </div>  
+                                <div class="col-6">
+                                    <label for=""> Break Rigging make</label>
+                                    <input type="text" class="form-control" name="break_rigging_make" id="break_rigging_make" placeholder="" maxlength="20" required>
+                                  </div>
+                                  <div class="col-6">
+                                    <label for="">Coil Spring make</label>
+                                    <input type="text" class="form-control" name="coil_spring_make" id="coil_spring_make" placeholder="" maxlength="20" required>
+                                  </div>
+                                  <!-- <div class="col-6">
+                                    <label for="">Secondary Coil Spring make</label>
+                                    <input type="text" class="form-control" name="secondary_coil_make" id="secondary_coil_make" placeholder="" required>
+                                  </div>  -->
+                                  <div class="col-6">
+                                    <label for="">Sand Box make</label>
+                                    <input type="text" class="form-control" name="sand_box_make" id="sand_box_make" placeholder="" maxlength="20" required>
+                                  </div>   
+                                  <div class="col-6">
+                                    <label for="">Spheri Block make</label>
+                                    <input type="text" class="form-control" name="spheri_block_make" id="spheri_block_make" placeholder="" maxlength="20" required>
+                                  </div>
+                                  <div class="col-6">
+                                    <label for="">Elastic Shop make</label>
+                                    <input type="text" class="form-control" name="elastic_shop_make" id="elastic_shop_make" placeholder="" maxlength="30" required>
+                                  </div>
+                                  <div class="col-6">
+                                    <label for="">Horizontal Damper</label>
+                                    <input type="text" class="form-control" name="horizontal_damper" id="horizontal_damper" placeholder="" maxlength="20" required>
+                                  </div>
+                                  <!-- <div class="col-6">
+                                    <label for="">Thrust Pad Make</label>
+                                    <input type="text" class="form-control" name="thrust_pad_make" id="thrust_pad_make" placeholder="" required>
+                                  </div>
+                                  <div class="col-6">
+                                    <label for="">Break Cylinder Make</label>
+                                    <input type="text" class="form-control" name="break_cylinder_make" id="break_cylinder_make" placeholder="" required>
+                                  </div> -->
+                                  <!-- <div class="col-6">
+                                    <label for="">Lateral Damper</label>
+                                    <input type="text" class="form-control" name="lateral_damper" id="lateral_damper" placeholder="" required>
+                                  </div>        -->
+                </div>
+            </div>                        
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                             <input type="submit" name="submit" class="btn btn-primary" id="savebtn" value="Inspect" />
+                        </div>
+              </form>
+     </div>
+ </div>
+</div> 
+
+</form>
+
+<script>
+    var i=0;
+        $(document).ready(function() {
+            $('#delform').bootstrapValidator({
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    delsno: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The username is required'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+        
+        $("#addbono").change(function(e){
+            e.preventDefault();
+            var selbo_no = $(this).val();
+            var data = {selbo_no};
+              $.ajax({
+                type : 'GET',
+                url : "{% url 'bogieassemb_addbo' %}",
+                dataType : 'json',
+                data : data,
+                success : function(response){            
+                    $("#bo_date").val(`${response[0].rel_date}`);
+                    $("#pt_no").val(`${response[0].part_no}`);
+                    $("#bo_qty").val(`${response[0].batch_qty}`);
+                    func1(selbo_no);
+                }
+            })
+        });
+
+        $("#addsno").change(function(e){
+            e.preventDefault();
+            var sels_no=$(this).val();
+            var data={sels_no};
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'FetchBogieInspectDetail' %}",
+                    dataType: 'json',
+                    data:data,
+                    success:function(response){
+                        if(response=="false")
+                        {
+                        document.getElementById('axle_no').value ='';
+                        document.getElementById('axle_location').value ='';
+                        document.getElementById('tm_no').value ='';
+                        document.getElementById('gear_case_no').value ='';
+                        document.getElementById('gear_case_make').value ='';
+                        document.getElementById('msu_unit_no').value ='';
+                        document.getElementById('break_rigging_make').value ='';
+                        document.getElementById('coil_spring_make').value ='';
+                        document.getElementById('sand_box_make').value ='';
+                        document.getElementById('spheri_block_make').value ='';
+                        document.getElementById('elastic_shop_make').value ='';
+                        document.getElementById('horizontal_damper').value ='';
+                        }
+                        else {
+                        $("#axle_no").val(`${response[0].axle_no}`);
+                        $("#axle_location").val(`${response[0].axle_location}`);
+                        $("#tm_no").val(`${response[0].traction_motor_no}`);
+                        $("#gear_case_no").val(`${response[0].gear_case_no}`);
+                        $("#gear_case_make").val(`${response[0].gear_case_make}`);
+                        $("#msu_unit_no").val(`${response[0].msu_unit_no}`);
+                        $("#break_rigging_make").val(`${response[0].break_rigging_make}`);
+                        $("#coil_spring_make").val(`${response[0].coil_spring_make}`);
+                        $("#sand_box_make").val(`${response[0].sand_box_make}`);
+                        $("#spheri_block_make").val(`${response[0].spheri_block_make}`);
+                        $("#elastic_shop_make").val(`${response[0].elastic_shop_make}`);
+                        $("#horizontal_damper").val(`${response[0].horizontal_damper}`);
+                        }
+
+                    }
+
+                })
+                
+        }); 
+
+
+        $("#hhpaddsno").change(function(e){
+            e.preventDefault();
+            var sels_no=$(this).val();
+            var data={sels_no};
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'FetchBogieInspectHHPDetail' %}",
+                    dataType: 'json',
+                    data:data,
+                    success:function(response){
+                        if(response=="false")
+                        {
+                        document.getElementById('hhpaxle_no').value ='';
+                        document.getElementById('hhpaxle_location').value ='';
+                        document.getElementById('hhptm_no').value ='';
+                        document.getElementById('hhpgear_case_no').value ='';
+                        document.getElementById('hhpgear_case_make').value ='';
+                        document.getElementById('hhpmsu_unit_no').value ='';
+                        document.getElementById('hhpbreak_rigging_make').value ='';
+                        document.getElementById('hhpcoil_spring_make').value ='';
+                        document.getElementById('hhpsand_box_make').value ='';
+                        document.getElementById('hhpspheri_block_make').value ='';
+                        document.getElementById('hhpelastic_shop_make').value ='';
+                        document.getElementById('hhphorizontal_damper').value ='';
+                        document.getElementById('hhpsecondary_coil_make').value ='';
+                        document.getElementById('hhpthrust_pad_make').value ='';
+                        document.getElementById('hhphorizontal_damper').value ='';
+                        document.getElementById('hhplateral_damper').value ='';
+                        }
+                        else {
+                        $("#hhpaxle_no").val(`${response[0].axle_no}`);
+                        $("#hhpaxle_location").val(`${response[0].axle_location}`);
+                        $("#hhptm_no").val(`${response[0].traction_motor_no}`);
+                        $("#hhpgear_case_no").val(`${response[0].gear_case_no}`);
+                        $("#hhpgear_case_make").val(`${response[0].gear_case_make}`);
+                        $("#hhpmsu_unit_no").val(`${response[0].msu_unit_no}`);
+                        $("#hhpbreak_rigging_make").val(`${response[0].break_rigging_make}`);
+                        $("#hhpcoil_spring_make").val(`${response[0].coil_spring_make}`);
+                        $("#hhpsand_box_make").val(`${response[0].sand_box_make}`);
+                        $("#hhpspheri_block_make").val(`${response[0].spheri_block_make}`);
+                        $("#hhpelastic_shop_make").val(`${response[0].elastic_shop_make}`);
+                        $("#hhphorizontal_damper").val(`${response[0].horizontal_damper}`);
+                        $("#hhpsecondary_coil_make").val(`${response[0].secondary_coil_make}`);
+                        $("#hhpthrust_pad_make").val(`${response[0].thrust_pad_make}`);
+                        $("#hhpbreak_cylinder_make").val(`${response[0].break_cylinder_make}`);
+                        $("#hhplateral_damper").val(`${response[0].lateral_damper}`);
+                        }
+
+                    }
+
+                })
+                
+        });
+
+        function  func1(batch){
+                    var selbo_no = batch;
+                    var data = {selbo_no};
+                      $.ajax({
+                        type : 'GET',
+                        url : "{% url 'airbox_addloco' %}",
+                        dataType : 'json',
+                        data : data,
+                        success : function(response){           
+                            $("#locos").val(`${response[0].alpha_1}`);
+                        }
+                    })
+                }
+
+
+        $("#editsno").change(function(e){
+            e.preventDefault();
+            var sels_no=$(this).val();
+            var data={sels_no};
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'bogieassemb_editsno' %}",
+                    dataType: 'json',
+                    data:data,
+                    success:function(response){
+                        console.log(response);
+                        $("#editbo_no").val(`${response[0].bo_no}`);
+                        $("#editbo_date").val(`${response[0].bo_date}`);
+                        $("#editpt_no").val(`${response[0].pt_no}`);
+                        $("#editbo_qty").val(`${response[0].bo_qty}`);
+                        $("#editdate").val(`${response[0].date}`);
+                        $("#editin_date").val(`${response[0].in_date}`);
+                        $("#editout_date").val(`${response[0].out_qty}`);
+                        $("#editframeserial_no").val(`${response[0].frameserial_no}`);
+                        $("#editframe_make").val(`${response[0].frame_make}`);
+                        $("#editframe_type").val(`${response[0].frame_type}`);
+                        var locodes=document.getElementById('editbo_no').value;
+                        func2(locodes);
+                    }
+                })
+        }); 
+        function  func2(batch){
+                    var batchNo = batch;
+                    var data = {batchNo};
+                      $.ajax({
+                        type : 'GET',
+                        url : "{% url 'airbox_addeditloco' %}",
+                        dataType : 'json',
+                        data : data,
+                        success : function(response){           
+                            $("#editlocos").val(`${response[0].alpha_1}`);
+                        }
+                    })
+                }
+
+</script>
+</html>  
+                     {% endblock content %}

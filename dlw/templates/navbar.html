@@ -1,0 +1,343 @@
+{% load static %}
+<style>
+
+            /* Navbar CSS */
+            .dropdown .dropdown-menu {
+            transition: opacity 0.5s ease;
+            opacity: 0;
+            visibility: hidden;
+            }
+
+            .dropdown:hover .dropdown-menu {
+                visibility: visible;
+                opacity: 1;
+            }
+            .dropdown-toggle{
+            transition: all 0.5s;
+            }
+            .submenu-scroll{
+                max-height: 300px;
+                overflow-y: auto;
+            }
+            .navbar-nav li:hover > ul.dropdown-menu {
+                display: block;
+            }
+            .dropdown-submenu {
+                position:relative;
+            }
+            
+            /* rotate caret on hover */
+            .dropdown-menu > li > a:hover:after {
+                text-decoration: underline;
+                transform: rotate(-90deg);
+            } 
+            .dropdown-submenu>.dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -6px;
+                margin-left: -1px;
+                -webkit-border-radius: 0 6px 6px 6px;
+                -moz-border-radius: 0 6px 6px;
+                border-radius: 0 6px 6px 6px;
+            }
+            
+            .dropdown-submenu:hover>.dropdown-menu {
+                display: block;
+            }
+            
+            .dropdown-submenu>a:after {
+                display: block;
+                content: " ";
+                float: right;
+                width: 0;
+                height: 0;
+                border-color: transparent;
+                border-style: solid;
+                border-width: 5px 0 5px 5px;
+                border-left-color: #ccc;
+                margin-top: 5px;
+                margin-right: -10px;
+            }
+            
+            .dropdown-submenu:hover>a:after {
+                border-left-color: #fff;
+            }
+            
+            .dropdown-submenu.pull-left {
+                float: none;
+            }
+            
+            .dropdown-submenu.pull-left>.dropdown-menu {
+                left: -100%;
+                margin-left: 10px;
+                -webkit-border-radius: 6px 0 6px 6px;
+                -moz-border-radius: 6px 0 6px 6px;
+                border-radius: 6px 0 6px 6px;
+            }
+        
+            li:hover > ul {
+                display:block;
+            }
+    
+            /* Dark Mode CSS */
+            .lightText{
+                color: rgb(232, 234, 237) !important;
+            }
+            .darkMode{
+                background-color: rgb(32, 33, 36) !important;
+            }
+                /* Theme toggle button */
+            .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            float: left;
+            }
+    
+            .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+            }
+            
+            .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+            }
+            
+            .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            }
+            
+            input:checked + .slider {
+            background-color: #2196F3 !important;
+            }
+            
+            input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3 !important;
+            }
+            
+            input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+            }
+            
+            /* Rounded sliders */
+            .slider.round {
+            border-radius: 34px;
+            }
+            
+            .slider.round:before {
+            border-radius: 50%;
+            }
+</style>
+
+
+<div class="page-header navbar-dark bg-dark">
+    <center><font color="white"><h3 style="margin:0 auto;">Diesel Locomotive Works, Varanasi</h3></font></center>
+    </div>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top" id="main-nav">
+    <div class="toggle-container" >
+        <h3 style="color: rgb(232, 234, 237) ;">Click to toggle dark theme</h3>
+    <label class="switch">
+        <input type="checkbox" id="checkBox">
+        <span class="slider round"></span>
+    </label>
+    
+    </div>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#collapse_target">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapse_target">
+    
+    <ul class="navbar nav" style="width:100%;">
+        <li class="navbar-item dropdown">
+            <a class="navbar-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="#" style="font-size:16px;color:#ffffff;">
+            Prod. Planning
+            <span class="caret"></span>
+            <ul class="dropdown-menu" aria-labelledby="dropdown_target">
+                {% for menu in nav %}
+            {% if menu.navmenu in "Prod. Planning" %}
+               <li class="dropdown-submenu"><a class="dropdown-item" href="{{menu.link}}">{{menu.navitem}}</a>
+                {% if subnav.parentmenu in menu.navitem %}
+                <ul class="dropdown-menu">
+                    {% for obj in subnav %}
+                        {% if obj.parentmenu in menu.navitem %}
+                            <li><a class="dropdown-item" href="{{obj.link}}">{{obj.childmenu}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            </li> 
+            {% endif %}
+            {% endfor %}
+            </ul>
+            </a>
+        </li>
+    <li class="navbar-item dropdown">
+            <a class="navbar-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="#" style="font-size:16px;color:#ffffff;">
+            Report
+            <span class="caret"></span>
+            <ul class="dropdown-menu" aria-labelledby="dropdown_target">
+                {% for menu in nav %}
+            {% if menu.navmenu in "Report" %}
+               <li class="dropdown-submenu"><a class="dropdown-item" href="{{menu.link}}">{{menu.navitem}}</a>
+                {% if subnav.parentmenu in menu.navitem %}
+                <ul class="dropdown-menu">
+                    {% for obj in subnav %}
+                        {% if obj.parentmenu in menu.navitem %}
+                            <li><a class="dropdown-item" href="{{obj.link}}">{{obj.childmenu}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            </li> 
+            {% endif %}
+            {% endfor %}
+            </ul>
+            </a>
+        </li>
+
+
+
+
+        <li class="navbar-item dropdown">
+            <a class="navbar-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="#" style="font-size:16px;color:#ffffff;">
+            Dashboard
+            <span class="caret"></span>
+            <ul class="dropdown-menu" aria-labelledby="dropdown_target">
+                {% for menu in nav %}
+            {% if menu.navmenu in "Dashboard" %}
+               <li class="dropdown-submenu"><a class="dropdown-item" href="{{menu.link}}">{{menu.navitem}}</a>
+                {% if subnav.parentmenu in menu.navitem %}
+                <ul class="dropdown-menu">
+                    {% for obj in subnav %}
+                        {% if obj.parentmenu in menu.navitem %}
+                            <li><a class="dropdown-item" href="{{obj.link}}">{{obj.childmenu}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            </li> 
+            {% endif %}
+            {% endfor %}
+            </ul>
+            </a>
+        </li>
+        <li class="navbar-item dropdown">
+            <a class="navbar-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="#" style="font-size:16px;color:#ffffff;">
+            Production
+            <span class="caret"></span>
+            <ul class="dropdown-menu" aria-labelledby="dropdown_target">
+                {% for menu in nav %}
+            {% if menu.navmenu in "Production" %}
+               <li class="dropdown-submenu"><a class="dropdown-item" href="{{menu.link}}">{{menu.navitem}}</a>
+                <ul class="dropdown-menu submenu-scroll">
+                    {% for obj in subnav %}
+                        {% if obj.parentmenu in menu.navitem %}
+                            <li><a class="dropdown-item"  href="{{obj.link}}" >{{obj.childmenu}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </li> 
+            {% endif %}
+            {% endfor %}
+            </ul>
+            </a>
+        </li>
+        <li class="navbar-item dropdown">
+            <a class="navbar-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="#" style="font-size:16px;color:#ffffff;">
+            Manpower
+            <span class="caret"></span>
+            <ul class="dropdown-menu" aria-labelledby="dropdown_target">
+                {% for menu in nav %}
+            {% if menu.navmenu in "Manpower" %}
+               <li class="dropdown-submenu"><a class="dropdown-item" href="{{menu.link}}">{{menu.navitem}}</a>
+                {% if subnav.parentmenu in menu.navitem %}
+                <ul class="dropdown-menu">
+                    {% for obj in subnav %}
+                        {% if obj.parentmenu in menu.navitem %}
+                            <li><a class="dropdown-item" href="{{obj.link}}">{{obj.childmenu}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            </li> 
+            {% endif %}
+            {% endfor %}
+            </ul>
+            </a>
+        </li>
+        <li class="navbar-item dropdown">
+            <a class="navbar-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="#" style="font-size:16px;color:#ffffff;">
+            Account
+            <span class="caret"></span>
+            <ul class="dropdown-menu" aria-labelledby="dropdown_target">
+                {% for menu in nav %}
+            {% if menu.navmenu in "Account" %}
+               <li class="dropdown-submenu"><a class="dropdown-item" href="{{menu.link}}">{{menu.navitem}}</a>
+                {% if subnav.parentmenu in menu.navitem %}
+                <ul class="dropdown-menu">
+                    {% for obj in subnav %}
+                        {% if obj.parentmenu in menu.navitem %}
+                            <li><a class="dropdown-item" href="{{obj.link}}">{{obj.childmenu}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            </li> 
+            {% endif %}
+            {% endfor %}
+            </ul>
+            </a>
+        </li>       
+
+        <li>
+            <a class="btn" onclick="foo()"><i class="glyphicon glyphicon-log-in"></i>
+                <font color="#FFFFFF" size="4.5pt">Logout</font>
+            </a>
+        </li>
+    </ul>
+</div>
+</nav>
+    <!-- Script for toggling features -->
+    <script>
+        var slider = document.querySelector(".slider");
+        var check= document.querySelector("#checkBox");
+        if($(":not(#form)").hasClass("darkMode") === false)  // resets toggler when page refreshes
+        {
+            check.checked = false
+        }
+        // Dark mode
+        $(document).ready(function(){           
+          $(".slider").click(function(){
+            var all = document.querySelectorAll("*");
+            $(":not()").toggleClass("darkMode")
+            all.forEach((x) => {
+            if(x.textContent)
+            {
+                x.classList.toggle("lightText");
+            }
+            
+        })
+          }); 
+        });
+
+    </script>

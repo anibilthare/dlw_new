@@ -1,0 +1,544 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<style>
+
+#customers {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    
+}
+
+#customers td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #808080;
+    color: white;
+}
+</style>
+<br>
+<br>
+<div> <h6 align="left" style="margin-left: 100px;"><b>आई.एस.ओ. - 9002/ I.S.O. - 9002</b> </h6> </div>
+<div> <h6 align="left" style="margin-left: 100px;"><b>डी० रे० का (वाराणासी )/ D.L.W. (Varanasi)</b></h6> <h6 align="right" style="margin-right: 100px;"></h6></div><br>
+<br>
+<br>
+<form action="." method="POST">{%csrf_token%}
+<br>
+<br>
+<div id="d1" style="height: 100%;">
+    <center>
+    <table style="height: 100%; margin-bottom: 0px;">
+    <tr>
+    <td><center><input type="submit" name="btn" value="Date Wise Report" class="form-control ll" required style="width:250px;" /></center><br></td>
+    <td><center><input type="submit" name="btn" value="Date Range Report" class="form-control ll" required style="width:250px;" /></center><br></td>
+    <td><center><input type="submit" name="btn" value="Pinion Pressing Detail" class="form-control ll" required style="width:250px;" /></center><br></td>
+    <td><center><input type="submit" name="btn" value="Record of Loco Type (date wise)" class="form-control ll" required style="width:310px;" /></center><br></td>
+    <td><center><input type="submit" name="btn" value="Record of Loco Type (date range)" class="form-control ll" required style="width:320px;" /></center><br></td>
+    </tr>
+    </table>
+    </center>
+    </div>
+    <br>
+{% if sub == 0 %}
+<center><input type="text" name="datew" id='datew' class="form-control ll" required style="width:250px;" placeholder="date" readonly required/></center>
+<input type="submit" value="Proceed1" name="btn" id="myproceed" hidden/>
+{% endif %}
+<br>
+{% if sub == 2 %}
+<center><h3>From Date:</h3><input type="text" name="date1" id='date1' class="form-control ll" required style="width:250px;" placeholder="date" readonly required/></center>
+<br>
+<center><h3>To Date:</h3><input type="text" name="date2" id='date2' class="form-control ll" required style="width:250px;" placeholder="date" readonly required/></center>
+<input type="submit" value="Proceed2" name="btn" id="proceeddt" hidden/>
+{% endif %}
+{% if sub == 4 %}
+<center><input type="text" name="datea" id='datea' class="form-control ll" required style="width:250px;" placeholder="date" readonly required/></center>
+<input type="submit" value="Proceed3" name="btn" id="Proceed3" hidden/>
+{% endif %}
+{% if sub == 10 %}
+<center><h3>From Date:</h3><input type="text" name="datell1" id='datell1' class="form-control ll" required style="width:250px;" placeholder="date" readonly required/></center>
+<br>
+<center><h3>To Date:</h3><input type="text" name="datell2" id='datell2' class="form-control ll" required style="width:250px;" placeholder="date" readonly required/></center>
+<input type="submit" value="Proceed10" name="btn" id="Proceed10" hidden/>
+<br>{% endif %}
+{% if sub == 12 %}
+<center>                
+    <label for="batch no"><b>
+    Enter Axle No. :
+    </b></label><br><br>
+</center>
+<center><input type="text" name="axle_no" id="axle_no"  class="form-control ll" required style="width:250px;" placeholder="" required/></center>
+<br><br>
+<center><input type="submit" value="Proceed" name="btn" id="Proceed"></center>
+<br><br>
+{% endif %}
+
+<div id="print">
+{% if sub == 1 %}
+<center><h2>DLW Varanasi</h2></center>
+<h2 align="left">Shop : TMS</h2>
+<h2 align="right">Date : {{dt}}</h2>
+<h2 align="left">Shop Section : Pinion Pressing Section</h2>
+<br><br>
+<br><br>
+<table id="customers" align="left">
+<tr>
+    <!-- <th style="width:250px;text-align:center;">Part No.</th> -->
+    <th style="width:250px;text-align:center;">Loco Type</th>
+    <th style="width:250px;text-align:center;">In Quantity</th>
+    <th style="width:250px;text-align:center;">Out Quantity</th>
+</tr>
+{% for i in unique_final %}
+<tr>
+    <!-- <td style="width:250px;text-align:center;">{{i.pt_no}}</td> -->
+    <td style="width:250px;text-align:center;">{{i.loco_type}}</td>
+    <td style="width:250px;text-align:center;">{{i.count1}}</td>
+    <td style="width:250px;text-align:center;">{{i.count2}}</td>
+</tr>
+{% endfor %}
+</table>
+<br><br><br><br><br><br><br><br><br><br>
+<table id="customers" align="right">
+    <tr>
+        <th style="width:250px;text-align:center;">Total In Quantity</th>
+        <th style="width:250px;text-align:center;">Total Out Quantity</th>
+    </tr>
+    <tr>
+        <td style="width:250px;text-align:center;">{{len1}}</td>
+        <td style="width:250px;text-align:center;">{{len2}}</td>
+    </tr>
+</table>
+<br><br><br><br><br><br>
+<br><center><input type="button" onclick="printDiv()" id="print_report" value="Print Report" class="form-control ll" required style="width:200px;" /></center>
+{% endif %}
+{% if sub == 3 %}
+<center><h2>DLW Varanasi</h2></center>
+<h2 align="left">Shop : TMS</h2>
+<h2 align="right">Date : {{dt1}} to {{dt2}}</h2>
+<h2 align="left">Shop Section : Pinion Pressing Section</h2>
+<table id="customers" align="left">
+<tr>
+    <!-- <th style="width:250px;text-align:center;">Part No.</th> -->
+    <th style="width:250px;text-align:center;">Loco Type</th>
+    <th style="width:250px;text-align:center;">In Quantity</th>
+    <th style="width:250px;text-align:center;">Out Quantity</th>
+</tr>
+{% for i in unique_final %}
+<tr>
+    <!-- <td style="width:250px;text-align:center;">{{i.pt_no}}</td> -->
+    <td style="width:250px;text-align:center;">{{i.loco_type}}</td>
+    <td style="width:250px;text-align:center;">{{i.count1}}</td>
+    <td style="width:250px;text-align:center;">{{i.count2}}</td>
+</tr>
+{% endfor %}
+</table>
+<br><br><br><br><br><br><br><br><br><br>
+<table id="customers" align="right">
+    <tr>
+        <th style="width:250px;text-align:center;">Total In Quantity</th>
+        <th style="width:250px;text-align:center;">Total Out Quantity</th>
+    </tr>
+    <tr>
+        <td style="width:250px;text-align:center;">{{len1}}</td>
+        <td style="width:250px;text-align:center;">{{len2}}</td>
+    </tr>
+</table>
+<br><br><br><br><br><br>
+<br><center><input type="button" onclick="printDiv()" value="Print Report" id="print_report" class="form-control ll" required style="width:200px;" /></center>
+{% endif %}
+{% if sub == 5 %}
+{% if l > 0 %}
+<center><h2>DLW Varanasi</h2></center>
+<h2 align="left">Shop : TMS</h2>
+<h2 align="right">Date : {{dt}}</h2>
+<h2 align="left">Shop Section : Pinion Pressing Section</h2>
+<br>
+
+<!-- <div id="printdata" style="align:center;">
+    <table align="center" id = "table">
+            {% for i in ob1 %}
+            <tr>  
+                <td>
+                    <label for="loco_type"><b>Batch No. : &nbsp;&nbsp;
+                         </b></label>
+                </td> 
+                <td>
+                    <label for="loco_type">{{i.bo_no}} 
+                         </label>
+                </td> 
+            
+                <td>
+                    <label for="batch no"><b>
+                        &nbsp;&nbsp; &nbsp;&nbsp; Part No. : &nbsp;&nbsp;
+                         </b></label>
+                </td> 
+                <td>
+                    <label for="loco_type">{{i.pt_no}} 
+                         </label>
+                </td>
+                <td>
+                    <label for="machine date"><b>
+                        &nbsp;&nbsp; &nbsp;&nbsp; Loco Type : &nbsp;&nbsp;
+                         </b></label>
+                </td>
+                <td>
+                    <label for="loco_type">{{i.loco_type}} 
+                         </label>
+                </td>
+            </tr>
+            {% endfor %}
+        </table> 
+            <br><br> -->
+<table id="customers" align="left">
+<tr>
+    <th style="width:250px;text-align:center;">Batch No.</th>
+    <th style="width:250px;text-align:center;">Part No.</th>
+    <th style="width:250px;text-align:center;">Date</th>
+    <th style="width:250px;text-align:center;">Axle No.</th>
+    <th style="width:250px;text-align:center;">Loco Type</th>
+    <th style="width:250px;text-align:center;">Traction Motor No.</th>
+    <th style="width:250px;text-align:center;">Traction Motor Make</th>
+    <th style="width:250px;text-align:center;">Pinion No.</th>
+    <th style="width:250px;text-align:center;">Pinion Make</th>
+    <th style="width:250px;text-align:center;">Pinion Travel</th>
+    <th style="width:250px;text-align:center;">Pinion Pressure</th>
+    <th style="width:250px;text-align:center;">Blue Machining Status</th>
+    <th style="width:250px;text-align:center;">Inspection Date</th>
+</tr>
+{% for i in ob1 %}
+<tr>
+    <td style="width:250px;text-align:center;">{{i.bo_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.pt_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.date}}</td>
+    <td style="width:250px;text-align:center;">{{i.axle_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.loco_type}}</td>
+    <td style="width:250px;text-align:center;">{{i.tm_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.tm_make}}</td>
+    <td style="width:250px;text-align:center;">{{i.pinion_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.pinion_make}}</td>
+    <td style="width:250px;text-align:center;">{{i.pinion_travel}}</td>
+    <td style="width:250px;text-align:center;">{{i.pinion_pressure}}</td>
+    <td style="width:250px;text-align:center;">{{i.blue_match}}</td>
+    <td style="width:250px;text-align:center;">{{i.inspect_date}}</td>
+{% endfor %}
+</tr>
+</table>
+<!-- </div> -->
+<br><br><br><br><center><input type="button" onclick="printDiv()" value="Print Report" id="print_report" class="form-control ll" required style="width:200px;" /></center>
+{% endif %}
+{% endif %}
+{% if sub == 11 %}
+{% if l > 0 %}
+<center><h2>DLW Varanasi</h2></center>
+<h2 align="left">Shop : TMS</h2>
+<h2 align="right">Date : {{dt1}} to {{dt2}}</h2>
+<h2 align="left">Shop Section : Pinion Pressing Section</h2>
+<br>
+
+<table id="customers" align="left">
+<tr>
+
+    <th style="width:250px;text-align:center;">Batch No.</th>
+    <th style="width:250px;text-align:center;">Part No.</th>
+    <th style="width:250px;text-align:center;">Date</th>
+    <th style="width:250px;text-align:center;">Axle No.</th>
+    <th style="width:250px;text-align:center;">Loco Type</th>
+    <th style="width:250px;text-align:center;">Traction Motor No.</th>
+    <th style="width:250px;text-align:center;">Traction Motor Make</th>
+    <th style="width:250px;text-align:center;">Pinion No.</th>
+    <th style="width:250px;text-align:center;">Pinion Make</th>
+    <th style="width:250px;text-align:center;">Pinion Travel</th>
+    <th style="width:250px;text-align:center;">Pinion Pressure</th>
+    <th style="width:250px;text-align:center;">Blue Machining Status</th>
+    <th style="width:250px;text-align:center;">Inspection Date</th>
+</tr>
+{% for i in ob1 %}
+<tr>
+
+    <td style="width:250px;text-align:center;">{{i.bo_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.pt_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.date}}</td>
+    <td style="width:250px;text-align:center;">{{i.axle_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.loco_type}}</td>
+    <td style="width:250px;text-align:center;">{{i.tm_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.tm_make}}</td>
+    <td style="width:250px;text-align:center;">{{i.pinion_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.pinion_make}}</td>
+    <td style="width:250px;text-align:center;">{{i.pinion_travel}}</td>
+    <td style="width:250px;text-align:center;">{{i.pinion_pressure}}</td>
+    <td style="width:250px;text-align:center;">{{i.blue_match}}</td>
+    <td style="width:250px;text-align:center;">{{i.inspect_date}}</td>
+{% endfor %}
+</tr>
+</table>
+<br><br><br><br><center><input type="button" onclick="printDiv()" value="Print Report" id="print_report" class="form-control ll" required style="width:200px;" /></center>
+{% endif %}
+{% endif %}
+{% if sub == 13 %}
+{% if l1 > 0 %}
+<center><h2>DLW Varanasi</h2></center>
+<h2 align="left">Shop : TMS</h2>
+<h2 align="left">Shop Section : Pinion Pressing Section</h2>
+<br>
+
+<div id="printdata" style="align:center;">
+    <table align="center" id = "table">
+            {% for i in ob1 %}
+            <tr>  
+                <td>
+                    <label for="loco_type"><b>Batch No. : &nbsp;&nbsp;
+                         </b></label>
+                </td> 
+                <td>
+                    <label for="loco_type">{{i.bo_no}} 
+                         </label>
+                </td> 
+            
+                <td>
+                    <label for="batch no"><b>
+                        &nbsp;&nbsp; &nbsp;&nbsp; Part No. : &nbsp;&nbsp;
+                         </b></label>
+                </td> 
+                <td>
+                    <label for="loco_type">{{i.pt_no}} 
+                         </label>
+                </td>
+                <td>
+                    <label for="machine date"><b>
+                        &nbsp;&nbsp; &nbsp;&nbsp; Loco Type : &nbsp;&nbsp;
+                         </b></label>
+                </td>
+                <td>
+                    <label for="loco_type">{{i.loco_type}} 
+                         </label>
+                </td>
+            </tr>
+            {% endfor %}
+        </table> 
+            <br><br>
+<table id="customers" align="left">
+<tr>
+    <th style="width:250px;text-align:center;">Batch No.</th>
+    <th style="width:250px;text-align:center;">Part No.</th>
+    <th style="width:250px;text-align:center;">Date</th>
+    <th style="width:250px;text-align:center;">Axle No.</th>
+    <th style="width:250px;text-align:center;">Loco Type</th>
+    <th style="width:250px;text-align:center;">Traction Motor No.</th>
+    <th style="width:250px;text-align:center;">Traction Motor Make</th>
+    <th style="width:250px;text-align:center;">Pinion No.</th>
+    <th style="width:250px;text-align:center;">Pinion Make</th>
+    <th style="width:250px;text-align:center;">Pinion Travel</th>
+    <th style="width:250px;text-align:center;">Pinion Pressure</th>
+    <th style="width:250px;text-align:center;">Blue Machining Status</th>
+    <th style="width:250px;text-align:center;">Inspection Date</th>
+</tr>
+{% for i in ob1 %}
+<tr>
+    <td style="width:250px;text-align:center;">{{i.bo_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.pt_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.date}}</td>
+    <td style="width:250px;text-align:center;">{{i.axle_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.loco_type}}</td>
+    <td style="width:250px;text-align:center;">{{i.tm_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.tm_make}}</td>
+    <td style="width:250px;text-align:center;">{{i.pinion_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.pinion_make}}</td>
+    <td style="width:250px;text-align:center;">{{i.pinion_travel}}</td>
+    <td style="width:250px;text-align:center;">{{i.pinion_pressure}}</td>
+    <td style="width:250px;text-align:center;">{{i.blue_match}}</td>
+    <td style="width:250px;text-align:center;">{{i.inspect_date}}</td>
+{% endfor %}
+</tr>
+</table>
+</div>
+<br><br><br><br><center><input type="button" onclick="printDiv()" value="Print Report" id="print_report" class="form-control ll" required style="width:200px;" /></center>
+{% endif %}
+{% if l2 > 0 %}
+<center><h2>DLW Varanasi</h2></center>
+<h2 align="left">Shop : TMS</h2>
+<h2 align="left">Shop Section : Pinion Pressing Section</h2>
+<br>
+
+<div id="printdata" style="align:center;">
+    <table align="center" id = "table">
+            {% for i in ob2 %}
+            <tr>  
+                <td>
+                    <label for="loco_type"><b>Batch No. : &nbsp;&nbsp;
+                         </b></label>
+                </td> 
+                <td>
+                    <label for="loco_type">{{i.bo_no}} 
+                         </label>
+                </td> 
+            
+                <td>
+                    <label for="batch no"><b>
+                        &nbsp;&nbsp; &nbsp;&nbsp; Part No. : &nbsp;&nbsp;
+                         </b></label>
+                </td> 
+                <td>
+                    <label for="loco_type">{{i.pt_no}} 
+                         </label>
+                </td>
+                <td>
+                    <label for="machine date"><b>
+                        &nbsp;&nbsp; &nbsp;&nbsp; Loco Type : &nbsp;&nbsp;
+                         </b></label>
+                </td>
+                <td>
+                    <label for="loco_type">{{i.loco_type}} 
+                         </label>
+                </td>
+            </tr>
+            {% endfor %}
+        </table> 
+            <br><br>
+<table id="customers" align="left">
+<tr>
+    <th style="width:250px;text-align:center;">Batch No.</th>
+    <th style="width:250px;text-align:center;">Part No.</th>
+    <th style="width:250px;text-align:center;">Date</th>
+    <th style="width:250px;text-align:center;">Axle No.</th>
+    <th style="width:250px;text-align:center;">Loco Type</th>
+    <th style="width:250px;text-align:center;">Traction Motor No.</th>
+    <th style="width:250px;text-align:center;">Traction Motor Make</th>
+</tr>
+{% for i in ob2 %}
+<tr>
+    <td style="width:250px;text-align:center;">{{i.bo_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.pt_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.date}}</td>
+    <td style="width:250px;text-align:center;">{{i.axle_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.loco_type}}</td>
+    <td style="width:250px;text-align:center;">{{i.tm_no}}</td>
+    <td style="width:250px;text-align:center;">{{i.tm_make}}</td>
+{% endfor %}
+</tr>
+</table>
+</div>
+<br><br><br><br><center><input type="button" onclick="printDiv()" value="Print Report" id="print_report" class="form-control ll" required style="width:200px;" /></center>
+{% endif %}
+{% endif %}
+</form>
+</div>
+<script>
+$(document).ready(function () {
+    $('#datew').datepicker({
+        dateFormat: 'dd-mm-yy',
+        onSelect: function(  ){
+    document.querySelector("#myproceed").click();
+    }
+});                   
+});
+$(document).ready(function () {
+    $('#datea').datepicker({
+        dateFormat: 'dd-mm-yy',
+        onSelect: function(  ){
+    document.querySelector("#Proceed3").click();
+    }
+});                   
+});
+$(document).ready(function () {
+    $('#date1').datepicker({
+        dateFormat: 'dd-mm-yy',
+});                   
+});
+$(document).ready(function () {
+    $('#date2').datepicker({
+        dateFormat: 'dd-mm-yy',
+        onSelect: function(  ){
+    document.querySelector("#proceeddt").click();
+    }
+});                   
+});
+$(document).ready(function () {
+    $('#datell1').datepicker({
+        dateFormat: 'dd-mm-yy',
+});                   
+});
+$(document).ready(function () {
+    $('#datell2').datepicker({
+        dateFormat: 'dd-mm-yy',
+        onSelect: function(  ){
+    document.querySelector("#Proceed10").click();
+    }
+});                   
+});
+$(document).ready(function () {
+    $('#month').datepicker({
+        dateFormat: 'mm-yy',
+        onSelect: function(  ){
+    document.querySelector("#monthdata").click();
+    }
+});                   
+});
+function tm()
+{
+    document.getElementById('proceedtm').click();
+}
+function printDiv() {
+    $("#print_report").hide();
+     var printContents = document.getElementById("print").innerHTML;
+
+       var style = "<style>";
+        style = style + "table {width: 100%;font: 17px Calibri;}";
+        style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+        style = style + "padding: 2px 3px;text-align: left;}";
+        style = style + "</style>";
+      var win = window.open('', '', 'height=500,width=500');
+
+        win.document.write('<html><head>');
+
+        win.document.write('<title>Pinion Press</title>');
+        win.document.write(style);
+        win.document.write('</head>');
+        win.document.write('<body>');
+        win.document.write(printContents);
+        win.document.write('</body></html>');
+
+        win.print();
+        win.close();
+
+
+
+}
+
+$('#axle_no').change(function(e){
+            e.preventDefault();
+            var axle_no=$(this).val();
+            //alert(wheel_no);
+            var data={axle_no};
+           // alert(data);
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'pinionaxle_validate' %}",
+                    dataType: 'json',
+                    data:data,
+                    success:function(response){
+                        if(response=="false")
+                        {
+                            alert("Please enter valid axle number.");
+                            document.getElementById('axle_no').value ='';
+                        }
+                        else
+                        {
+                            // alert("Click proceed button");
+                        }
+                    }
+
+                })
+                
+        });
+
+</script>
+
+{% endblock content %}

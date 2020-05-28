@@ -1,0 +1,284 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>DLW Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+
+    <style>
+    @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+    body {
+    font-family: "Quicksand", sans-serif;
+    background-color: #ecf0f1;
+    
+    }
+    /* .main-head{
+    height: 150px;
+    background: #FFF;
+   } */
+
+    .sidenav {
+    height: 100%;
+    background-color: rgb(32, 33, 36);
+    overflow-x: hidden;
+    padding-top: 20px;
+    z-index: 100;
+    }
+    .main {
+    padding: 0px 10px;
+    }
+ /* for  toggling background colour */
+    .darkMode{
+        background-color: rgb(32, 33, 36) !important;
+    }
+/*  */
+
+    @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    }
+    @media screen and (max-width: 450px) {
+    .login-form{
+        margin-top: 10%;
+    }
+
+    .register-form{
+        margin-top: 10%;
+    }}
+
+    @media screen and (min-width: 768px){
+    .main{
+        margin-left: 40%; 
+    }
+
+    .sidenav{
+        width: 40%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+    }
+
+    .login-form{
+        margin-top: 80%;
+    }
+
+    .register-form{
+        margin-top: 20%;
+    }}
+
+#img{
+    display: none;
+}
+.login-main-text{
+    margin-top: 20%;
+    padding: 60px;
+    color: rgb(232, 234, 237);
+}
+
+.login-main-text h2{
+    font-weight: 300;
+}
+
+/* .btn-black{
+    background-color: #000 !important;
+    
+} */
+@media screen and (orientation: landscape) and (max-height: 450px){  
+    .sidenav {
+        display: none;
+    }
+    body{
+        height: 100%;
+
+    }
+    .toggle-container{
+        padding: 10px;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    
+}
+
+@media screen and (max-height: 800px) and (orientation: portrait){
+    .sidenav {
+        display: none;
+    }
+    body{
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        /* justify-content: center; */
+        background-color: #ecf0f1;
+    }
+    .toggle-container{
+        padding: 10px;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    #crisImage{
+        width: 20% !important;
+        position: relative;
+    }
+}
+
+/* for toggling text colour */
+.lightText{
+        color: rgb(232, 234, 237) !important;
+    }
+/* Theme toggle button */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  float: left;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3 !important;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3 !important;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+    </style>
+</head>
+
+<body>
+ 
+<div class="sidenav .d-sm-none .d-md-block">
+    <div class="login-main-text">
+        <center><img src="{% static 'dlw/images/watermark.png' %}" style="width:30%;height:30%;"></center><br><br>
+
+        <h1><center>Diesel Locomotive Works, Varanasi</center></h1><br><br>
+        
+        <I><center><h2><p>Login to access</p></h2></center></I>
+    </div>
+</div>
+<div class="main">
+    <div class="toggle-container" >
+        <h3>Click to toggle dark theme</h3>
+    <label class="switch">
+        <input type="checkbox" id="checkBox">
+        <span class="slider round"></span>
+    </label>
+    
+    </div>
+    <img src="{% static 'dlw/images/cris.png' %}" style="z-index:9;width:7%;height:10%;float: right;position: absolute;right: 0;top: 0;" id="crisImage">
+    
+    <div class="col-md-6 col-sm-12">
+        <div class="login-form">
+            <form id="form" action="." method="POST" style="z-index:1;">{%csrf_token%}
+                <div class="form-group">
+                    
+                    <h3><label>User Name</label></h3>
+                    <input type="text" class="form-control" placeholder="User Name" name="user_id" style="font-size:12pt;">
+                </div>
+                <div class="form-group">
+                    <h3><label>Password</label></h3>
+                    <input type="password" class="form-control" placeholder="Password" name="password" style="font-size:12pt;">
+                </div>
+                <!-- <button type="submit" class="btn btn-black">Login</button> -->
+                <button type="submit" class="btn btn-secondary" style="font-size:16px;">Login</button>&nbsp;&nbsp;
+                <font size="2"><a href="/forget_password_path/">Forget Password?</a></font>
+            </form>
+            
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <font size="3">
+                        <li>
+                                        {{ message }}
+                        </li>
+                    </font>
+                    {% endfor %}
+                </ul>
+        {% endif %}
+        </div>
+    </div>
+</div>
+
+    <!-- Script for toggling features -->
+    <script>
+        // Dark Mode
+        var slider = document.querySelector(".slider");
+        var check= document.querySelector("#checkBox");
+        if($(":not(#form)").hasClass("darkMode") === false)
+        {
+            check.checked = false
+        }
+        $(document).ready(function(){           
+          $(".slider").click(function(){
+            $(":not(#form)").toggleClass("darkMode");
+            $(".login-main-text").toggleClass("lightText");
+            $("h3").toggleClass("lightText");
+          }); 
+        });
+    
+    </script>
+</html>
+
+
+

@@ -1,0 +1,760 @@
+{% extends 'base.html' %}
+       
+{% block content %}
+<style>
+    #divdata{
+    display: none;
+}
+        #customers {
+          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          margin-left: auto;
+          margin-right: auto;
+          width: 100%;
+          
+        }
+        
+        #customers td, #customers th {
+          border: 1px solid #ddd;
+          padding: 8px;
+        }
+        
+        #customers tr:nth-child(even){background-color: #f2f2f2;}
+        
+        #customers tr:hover {background-color: #ddd;}
+        
+        #customers th {
+          padding-top: 12px;
+          padding-bottom: 12px;
+          text-align: left;
+          /*background-color: #4CAF50;*/
+          background-color: #808080;
+          
+          color: white;
+        }
+        #custo {
+          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          margin-left: auto;
+          margin-right: auto;
+          width: 100%;
+          
+        }
+        
+        #custo td, #custoth {
+          border: 1px solid #ddd;
+          padding: 8px;
+        }
+        
+        #custo tr:nth-child(even){background-color: #f2f2f2;}
+        
+        #custo tr:hover {background-color: #ddd;}
+        
+        #custo th {
+          padding-top: 12px;
+          padding-bottom: 12px;
+          text-align: left;
+          background-color: #4CAF50;
+          color: white;
+        }
+    
+    </style>
+<form action="." method="POST">{%csrf_token%}  
+    <center><h2>DPO</h2></center>
+<div class="containers">
+<table align="center" id="customers">
+    {% comment %} <tr>
+      
+    </tr> {% endcomment %}
+    <datalist id="locoindb">
+                {% for lc in locoindb %}
+                <option value="{{lc}}">{{lc}}</option>
+                {% endfor %}
+            </datalist>
+
+
+            <datalist id="annualloco">
+                {% for la in annualloco %}
+                <option value={{la}}>{{la}}</option>
+                {% endfor %}
+            </datalist>
+    <tr><td>Select Loco Type:</td>
+    <td><div class="dropdown">
+        <select name="loco" class="form-control ll" id="loco" required>
+            <div class="dropdown-content">
+            <option selected="selected" value="" disabled>Loco Name:</option>
+            {% for l in locolist %}
+            <option value="{{l}}">{{l}}</option>
+            {% endfor %}
+        </select></div></td>
+       
+        <td><input type="text" id="barl2" name="barl2" placeholder="Order No:" onblur="prcdcall()" required/></td>
+
+    </tr>
+</table>
+<br>
+            <input type="hidden" name="bnothr" id="bnothr" value="0" />
+            <input type="hidden" name="cm" id="cm" value={{cm}} />
+            <input type="hidden" name="cm2" id="ttlcnt"/>
+            <input type="hidden" name="b1" value={{b1}} id="b1"/>
+            <input type="hidden" name="b2" value={{b2}} id="b2"/>
+            <input type="hidden" name="lcname" value="{{lcname}}" id="lcname"/>
+            <input type="hidden" name="totbaches" value=0 id="totbaches" />
+<input type="hidden" name="dataext" id="dataext" value="{{dataext}}">
+
+
+
+{% if add == 1 %}
+<table  id="customers">
+  <tr>
+      <td><b>Office of the :</b></td></td><td>{{Role}}</td>
+
+  <td><b>Date :<b></td>
+      <td>
+      {% comment %} <span style="position: relative;display: inline-block;border: 1px solid #a9a9a9;height: 28px;width: 200px">
+        <input type="date" class="xDateContainer" onchange="setCorrect(this,'xTime');" style="position: absolute; opacity: 0.0;height: 150%;width: 100%;">
+        <input type="text" id="xTime" name="xTime" style="border: none;height: 100%; font-size:16px;" tabindex="-1"><span style="display: inline-block;width: 16px;z-index: 2;float:right;padding-top: 4px;" tabindex="-1">&#9660;</span>
+        </span>  {% endcomment %}
+        <input type="text" id="datepicker2" name="xTime" style="width: 150px;" placeholder="dd-mm-yyyy" value={{date}} readonly>
+
+        </td>
+  <td></td>
+</tr>
+</table>
+
+<table id="custo" align="center">
+<tr>
+  <td style="width: 20%"><b>Subject:</b></td>
+  <td style="width: 30%"><textarea name="sub" placeholder="subject" wrap="soft" style="width: 100%;" rows="5" >{{subject}}</textarea></td>
+  <td style="width: 20%"><b>Reference:</b></td>
+  <td style="width: 30%"><textarea name="refn" placeholder="reference" wrap="soft" style="width: 100%;" rows="5">{{reference}}</textarea></td>
+</tr>
+<tr>
+    <td style="width: 20%"><b>Summary:</b></td>
+    <td style="width: 30%"><textarea name="summary" placeholder="summary" wrap="soft" style="width: 100%" rows="5">{{summary}}</textarea></td>
+    <td style="width: 20%"><b>Copy To:</b></td>
+    <td style="width: 30%"><textarea name="copyto" placeholder="copy to" wrap="soft" style="width: 100%" rows="5">{{copyto}}</textarea></td>
+</tr>
+        <tr>
+            <td><input type="button" id="addloco" value="Add Loco" /></td>
+        </tr>
+</table>
+
+       <div id="lcbtch"></div>
+
+<table id="customers" align="center">
+  {% if dataext %}
+  <tr><th>Batch Order NO:</th><th>QTY. of Batch</th><th>Type of Loco</th>
+            <th>Cumilative No. of Loco</th></tr>
+   {% for key, values in dictemper.items %}
+
+                        <tr>
+
+                            <td><input type="hidden" id="bno{{forloop.counter}}" name="bno{{forloop.counter}}" value="{{values.bno}}" >{{values.bno}}</td>
+                            <td><input type="text" id="qty{{forloop.counter}}" name="qty{{forloop.counter}}" onkeyup="myFunction(this)" value="{{values.qty}}" ></td>
+                            <td><input type="hidden" id="typ{{forloop.counter}}" name="typ{{forloop.counter}}" value="{{values.loconame}}" >{{values.loconame}}</td>
+                            <td><input type="text" id="cumino{{forloop.counter}}" name="cumino{{forloop.counter}}" value="{{values.cumino}}" ></td>
+
+                          </tr>
+    {% endfor %}
+  
+  {% endif %}
+  
+</table>
+<table id="customers" align="center">
+  
+  <div id="items"></div>
+
+
+</table>
+
+
+  <table id="custo" align="center"><tr><td><input type="submit" name ='submit' value='Save' id="save"/></td></tr>
+</table>
+{% endif %}
+<input type="submit" name ='submit' value='Proceed' id="proceed" style="display: none"/>
+</div>
+
+</form>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script language="javascript">
+$( function() {
+              $( "#datepicker2" ).datepicker({
+                dateFormat:'dd-mm-yy',
+                changeMonth:true,
+                changeYear:true,
+                yearRange:"2009:2099"
+              }).val;
+            } );
+
+
+var j=0;
+var bnothr=0;
+var bnnoo=0;
+var aj=0;
+var tog=0;
+var another=0;
+var locoin=[];
+var idname="loconame"
+var matchEnterdDate = 0;
+    //function to set back date opacity for non supported browsers
+window.onload = function() {
+      var input = document.createElement('input');
+      input.setAttribute('type', 'date');
+      input.setAttribute('value', 'some text');
+      if (input.value === "some text") {
+          allDates = document.getElementsByClassName("xDateContainer");
+          console.log(allDates);
+          matchEnterdDate = 1;
+          for (var i = 0; i < allDates.length; i++) {
+              allDates[i].style.opacity = "1";
+          }
+      }
+  }
+  //function to convert enterd date to any format
+function setCorrect(xObj, xTraget) {
+  var date = new Date(xObj.value);
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  var year = date.getFullYear();
+  if (month != 'NaN') {
+      document.getElementById(xTraget).value = day + "-" + month + "-" + year;
+  } else {
+      if (matchEnterdDate == 1) {
+          document.getElementById(xTraget).value = xObj.value;
+      }
+  }
+
+}
+function prcdcall()
+{
+    document.getElementById('proceed').click();
+}
+
+
+$(document).ready(() => {
+   var x=document.getElementById("locoindb");
+     var pp=0;
+     for (pp = 0; pp < x.options.length; pp++) {
+      locoin.push(x.options[pp].value);
+
+     }
+     console.log("locoin",locoin);
+
+        j=document.getElementById("dataext").value;
+
+
+  var typecd = document.getElementById('lcname').value;
+console.log(typecd);
+var ordno=document.getElementById('b2').value;
+    $("#loco").val(typecd);
+    $("#barl2").val(ordno);
+});
+
+$(document).ready(function(){
+    $(document).on("click", ".delete", function(){
+
+//var user_choice = window.confirm('Are you sure you want to delete the Record??');
+
+//if(user_choice==true) {
+
+$(this).parents("tr").remove();
+    $(".add-new").removeAttr("disabled");
+// window.location='your url';  // you can also use element.submit() if your input type='submit' 
+
+
+//} else {
+
+
+//return false;
+
+
+//}
+
+
+        
+    });
+
+
+    $("#addloco").click(function(e){
+        event.preventDefault()
+        aj++;
+
+        var locoan=[];
+        
+        idname="loconame"+String(aj);
+       
+        var newp='<div><table id="customers"><td><b>Loco Name:</b></td>'+
+            '<td><select name='+idname+' id='+idname+' onchange="findcm(this);" class="form-control ll" ></select></td>'+
+            '<td><input type="button" id="add" value="Add Batch"/></td>'+
+            '<input type="hidden" name="num" value="THE OUTPUT OF BATCH FUNCTION" id="myvalue"/></table></div>'
+            $('#lcbtch').append(newp);
+
+
+            document.getElementById('ttlcnt').value=aj;
+
+           var x=document.getElementById("annualloco");
+            var pp=0;
+            for (pp = 0; pp < x.options.length; pp++) {
+                    if(aj==1)
+                    {
+                    locoan.push(x.options[pp].value);
+                    }
+                  $("#"+idname).append("<option value='"+x.options[pp].value+"'>"+x.options[pp].value+"</option>");
+
+                                                       }
+
+
+            if(aj==1)
+            {
+            var lol=document.getElementById(idname).value;
+            var n = locoin.includes(lol);
+            if(n)
+            {
+              console.log(n);
+            }
+            else{
+              tog=1;
+            }
+            }
+    });
+
+    $('body').on('click','#add',function(e){
+        event.preventDefault()
+        console.log("j"+String(j));
+        var dataext=document.getElementById('dataext').value;  
+        console.log("dataext",dataext);
+        
+        if(j==dataext)
+        {
+        bnothr=document.getElementById("bnothr").value;
+        }
+
+        bnothr++;
+        j++;
+
+        console.log("idname:"+String(idname));
+        assign();
+
+        var bnoname="bno"+String(j);
+        var qtyname="qty"+String(j);
+        var typname="typ"+String(j);
+        var cuminoname="cumino"+String(j);
+        var b1= document.getElementById("b1").value;
+        var b2= document.getElementById('b2').value;
+        var loconame=document.getElementById(idname).value;
+        if((aj==1 && tog==0) || (aj==1 && dataext==0))
+        {
+                var sno=bnothr;
+                  if(bnothr<10){
+                  var bn=String(b1)+'/'+String(b2)+'/00'+String(sno);
+                }
+                else if(bnothr<100)
+                {
+                  var bn=String(b1)+'/'+String(b2)+'/0'+String(sno);
+
+                }
+                else{
+                  var bn=String(b1)+'/'+String(b2)+'/'+String(sno);
+                }
+        }
+
+        else
+        { 
+
+          var bnoval=document.getElementById('bno'+String(j-1)).value;
+          console.log("bnoval",bnoval);
+          var res = bnoval.split("/");
+          bnnoo=parseInt(res[2])+1;
+        var sno=bnnoo;
+        console.log("bnnooo",bnnoo);          
+
+          if(bnnoo<10){
+                  var bn=String(b1)+'/'+String(b2)+'/00'+String(sno);
+                }
+                else if(bnnoo<100)
+                {
+                  var bn=String(b1)+'/'+String(b2)+'/0'+String(sno);
+
+                }
+                else{
+                  var bn=String(b1)+'/'+String(b2)+'/'+String(sno);
+                }
+                bnnoo++;
+        }
+      
+
+      
+        if(j==1)
+        {
+            var happ='<div><table id="customers">'+'<tr><th>Batch Order NO:</th><th>QTY. of Batch</th><th>Type of Loco</th>'+
+            '<th>Cumilative No. of Loco</th>';
+
+    happ=happ+'</tr></table></div>';
+        $('#items').append(happ);
+
+        }
+var htAppend='<div><table id="customers"><tr>'+'<td>'+bn+'</td><input type="hidden" id="'+bnoname+'" name="'+bnoname+'" value="'+bn+'"  >'+'<td><input type="text" id="'+qtyname+'" name="'+qtyname+'" pattern="[0-9]*" title="numbers only" onkeyup="myFunction(this)"> </td>'+'<td>'+loconame+'</td><input type="hidden" id="'+typname+'" name="'+typname+'" value="'+loconame+'"  >'+'<td><input type="text" id='+cuminoname+' name='+cuminoname+'></td>';
+       
+
+     $("#totdiv").remove();
+
+
+
+   
+   var tot=0;
+   for(var i=1;i<=j-1;i++)
+   {
+    if(document.getElementById('qty'+String(i)).value)
+    {
+      tot=tot+parseInt(document.getElementById('qty'+String(i)).value);
+    }
+    else
+    {
+      tot=tot+0;
+    }
+   }
+
+
+     htAppend=htAppend+'</tr>'+'<tr id="totdiv"><td>Total</td><td id="totval">'+tot+'</td>'
+     
+ htAppend=htAppend+'</tr></table>'+'</div>';
+     $('#items').append(htAppend);
+     document.getElementById("totbaches").value=j;
+
+    });
+    $('body').on('click','#del',function(e){
+        $(this).parent('div').remove();
+    });
+
+
+});
+
+
+function myFunction(elem){
+    var id = elem.id;
+    console.log(id);
+    var name=elem.name;
+    var txt = document.getElementById(id).value; 
+    // console.log('area element value = ' + name);
+    var array = name.split("qty");
+
+    var cuminoname="cumino"+String(array[1]);
+    if(array[1]==1)
+    {
+    var cm= parseInt(document.getElementById("cm").value);
+    var cuminoval=String(cm)+'-'+String(cm+parseInt(txt)-1);
+    document.getElementById(cuminoname).value=cuminoval;
+
+    var i;
+    var p;
+    for(i=array[1];i<=j;i++)
+    {
+      if(document.getElementById('qty'+String(i)).value)
+      {
+          var qval=document.getElementById('qty'+String(i)).value;
+          // cuminoname="cumino"+String(i-1);
+          // var cuminoval=document.getElementById(cuminoname).value;
+          if(i==1)
+          {
+          var cuminoval=String(cm)+'-'+String(cm+parseInt(txt)-1);
+        }
+        else
+        {
+          cuminoname="cumino"+String(i-1);
+          var cuminoval=document.getElementById(cuminoname).value;
+        }
+          p=i-1;
+          if(cuminoval)
+          {
+          var cval=cuminoval.split('-');
+          }
+
+          
+
+          else
+          {
+           while(p>=1)
+           {
+            p=p-1;
+            cuminoname="cumino"+String(p);
+            var cuminoval=document.getElementById(cuminoname).value;
+            if(cuminoval)
+            {
+           var cval=cuminoval.split('-');
+            break;
+            }
+           }
+          }
+
+          if(i==1)
+          {
+          cuminoname="cumino"+String(i);
+
+
+          document.getElementById(cuminoname).value=cuminoval;
+
+          }
+
+          else
+          {
+
+          cuminoval=String(parseInt(cval[1])+1)+'-'+String(parseInt(cval[1])+parseInt(qval));
+          cuminoname="cumino"+String(i);
+          document.getElementById(cuminoname).value=cuminoval;
+        }
+      }
+
+    }
+
+
+    }
+  
+
+    else 
+    {
+      
+      var typ1=document.getElementById("typ"+String(array[1]-1));
+    var typ2=document.getElementById("typ"+String(array[1]));
+
+    if(typ1==typ2)
+    {
+
+   console.log("elseif");
+    var i;
+    var p
+    for(i=array[1];i<=j;i++)
+    {
+      if(document.getElementById('qty'+String(i)).value)
+      {
+          var qval=document.getElementById('qty'+String(i)).value;
+          cuminoname="cumino"+String(i-1);
+
+          var cuminoval=document.getElementById(cuminoname).value;
+          p=i-1;
+          if(cuminoval)
+          {
+          var cval=cuminoval.split('-');
+          }
+
+          
+
+          else
+          {
+           while(p>=1)
+           {
+            p=p-1;
+            cuminoname="cumino"+String(p);
+            var cuminoval=document.getElementById(cuminoname).value;
+            if(cuminoval)
+            {
+           var cval=cuminoval.split('-');
+            break;
+            }
+           }
+          }
+
+          cuminoval=String(parseInt(cval[1])+1)+'-'+String(parseInt(cval[1])+parseInt(qval));
+          cuminoname="cumino"+String(i);
+          document.getElementById(cuminoname).value=cuminoval;
+      }
+
+    }
+     
+      
+    //   var val=document.getElementById("cumino"+String(parseInt(array[1])-1)).value;
+    //   console.log("cumino"+String(parseInt(array[1])-1));
+    //     var spl=val.split("-");
+     
+    // var cm= parseInt(spl[1])+1;
+    // var cuminoval=String(cm)+'-'+String(cm+parseInt(txt)-1);
+    // document.getElementById(cuminoname).value=cuminoval;
+    }
+
+    else
+    {
+      obj={}
+      for(i=1;i<=j;i++)
+      {
+        var typna=document.getElementById("typ"+String(i)).value;
+        obj["typ"+String(i)]=typna;
+      }
+      console.log(obj);
+      console.log("elseelse");
+      var k=array[1];
+      var arr1=array[1];
+      console.log("ar",arr1);
+      var ty="typ"+array[1];
+        var typn=obj[ty];
+      while(true)
+      {
+        
+        k--;
+        var tyy="typ"+String(k);
+        var tyypn=obj[tyy];
+        if(typn==tyypn)
+        {
+          
+        }
+        else{
+          var tpval=tyy.split("typ");
+         arr1=parseInt(tpval[1])+1;
+         break;
+        }
+
+
+      }
+      console.log("arr1",arr1);
+
+      var cm= parseInt(document.getElementById("cm").value);
+    var cuminoval=String(cm)+'-'+String(cm+parseInt(txt)-1);
+    document.getElementById(cuminoname).value=cuminoval;
+    console.log(cm);
+    console.log("cumival",cuminoval,"cuminame",cuminoname);
+    
+
+    var i;
+    var p;
+    for(i=array[1];i<=j;i++)
+    {
+      if(document.getElementById('qty'+String(i)).value)
+      {
+          var qval=document.getElementById('qty'+String(i)).value;
+          // cuminoname="cumino"+String(i-1);
+          // var cuminoval=document.getElementById(cuminoname).value;
+          if(i==arr1)
+          {
+            console.log("i",i,"arr1",arr1,"array[1]",array[1],"j",j);
+          var cuminoval=String(cm)+'-'+String(cm+parseInt(txt)-1);
+            console.log("if i==arr1",cuminoval);
+
+        }
+        else
+        {
+           
+          
+          cuminoname="cumino"+String(i-1);
+          var cuminoval=document.getElementById(cuminoname).value;
+        }
+          p=i-1;
+          if(cuminoval)
+          {
+          var cval=cuminoval.split('-');
+          }
+
+          
+
+          else
+          {
+           while(p>=1)
+           {
+            p=p-1;
+            cuminoname="cumino"+String(p);
+            var cuminoval=document.getElementById(cuminoname).value;
+            if(cuminoval)
+            {
+           var cval=cuminoval.split('-');
+            break;
+            }
+           }
+          }
+
+          if(i==arr1)
+          {
+          cuminoname="cumino"+String(i);
+
+
+          document.getElementById(cuminoname).value=cuminoval;
+
+          }
+
+          else
+          {
+
+          cuminoval=String(parseInt(cval[1])+1)+'-'+String(parseInt(cval[1])+parseInt(qval));
+          cuminoname="cumino"+String(i);
+          document.getElementById(cuminoname).value=cuminoval;
+        }
+      }
+
+    }
+
+    }
+
+
+
+
+
+
+
+
+    }
+
+
+   var num=array[1];
+   var tot=0;
+   for(var i=1;i<=j;i++)
+   {
+      if(document.getElementById('qty'+String(i)).value)
+    {
+      tot=tot+parseInt(document.getElementById('qty'+String(i)).value);
+    }
+    else
+    {
+      tot=tot+0;
+    }
+   }
+   $('#totval').text(tot);
+
+    }
+function assign(){
+        function operation()
+        {
+        console.log(j);
+        return j;
+        }
+       document.getElementById('myvalue').value =operation();
+    }
+
+
+function findcm(x) {
+var lcid=x.id;
+var loco=document.getElementById(lcid).value;
+var locot=document.getElementById('loco').value;
+var ordno=document.getElementById('barl2').value;
+// console.log("in func cm:",String(loco));
+console.log("in cmfunc");
+var data = {
+    loco,
+    locot,
+    ordno
+};
+console.log(data);
+$.ajax({
+        type: 'GET',
+        url: "{% url 'getcumino' %}",
+        dataType: 'json',
+        data: data,
+        success: function(response) {
+          console.log("success ajax");
+            document.getElementById('cm').value = response.dpo_info.cumino;
+            document.getElementById('bnothr').value = response.dpo_info.bnothr;
+        bnothr=document.getElementById('bnothr').value;
+        
+
+            
+
+        },
+        error: function(response) {console.log("no ajax");}
+    });
+}
+  </script>
+{% endblock content %}
