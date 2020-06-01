@@ -203,6 +203,14 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+.input-lg{
+    background: none !important;
+    border: none !important;
+    border-bottom: 1px solid black !important;
+    font-family: 'Roboto';
+    font-size: 250% !important;
+}
+
     </style>
 </head>
 
@@ -229,16 +237,16 @@ input:checked + .slider:before {
     <img src="{% static 'dlw/images/cris.png' %}" style="z-index:9;width:7%;height:10%;float: right;position: absolute;right: 0;top: 0;" id="crisImage">
     
     <div class="col-md-6 col-sm-12">
-        <div class="login-form">
+        <div class="login-form ">
             <form id="form" action="." method="POST" style="z-index:1;">{%csrf_token%}
                 <div class="form-group">
                     
-                    <h3><label>User Name</label></h3>
-                    <input type="text" class="form-control" placeholder="User Name" name="user_id" style="font-size:12pt;">
+                    <!-- <h3><label>User Name</label></h3> -->
+                    <input type="text" class="form-control input-lg" placeholder="User Name" name="user_id" style="font-size:12pt;">
                 </div>
                 <div class="form-group">
-                    <h3><label>Password</label></h3>
-                    <input type="password" class="form-control" placeholder="Password" name="password" style="font-size:12pt;">
+                    <!-- <h3><label>Password</label></h3> -->
+                    <input type="password" class="form-control input-lg" placeholder="Password" name="password" style="font-size:12pt;">
                 </div>
                 <!-- <button type="submit" class="btn btn-black">Login</button> -->
                 <button type="submit" class="btn btn-secondary" style="font-size:16px;">Login</button>&nbsp;&nbsp;
