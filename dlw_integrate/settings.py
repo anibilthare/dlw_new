@@ -79,16 +79,16 @@ WSGI_APPLICATION = 'dlw_integrate.wsgi.application'
 
 #Datbase connectivity config
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'production',
-#         'USER': 'postgres',
-#         'PASSWORD': 'password@123',
-#         'HOST': '13.71.87.115',
-#         'PORT': '5432',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'production',
+        'USER': 'postgres',
+        'PASSWORD': 'eatsleepcode',
+        'HOST': '13.71.87.115',
+        'PORT': '5432',
+    }
+}
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

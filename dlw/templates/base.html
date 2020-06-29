@@ -45,6 +45,16 @@
     .page-content::after {
         height: 40px;
     }
+    footer{
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        z-index: 999;
+    }
+    footer div {
+        text-align: center;
+    }
 </style>
 
 <body>
@@ -53,7 +63,7 @@
     </div>
     <footer class="navbar-dark bg-dark" style="margin-bottom:0;">
         <div>
-            <center><span id="footerText" style="color:white;"></span></center>
+            <span id="footerText" style="color:white;"></span>
         </div>
     </footer>
 
@@ -93,14 +103,16 @@
                 alert('Session about to get over, Refresh to stay logged in');
                 clearInterval(myinter);
             }
+            
         })
+        // Google API for fetching time for footer
         fetch('http://worldtimeapi.org/api/timezone/Asia/Kolkata').then(res => res.json()).then(data => {
-            let x =data.datetime.split("-",1);
-            document.getElementById("footerText").innerHTML = `Copyright &copy; ${x[0]} - Your Current IP is {{ip}}`
+            let x = data.datetime.split("-",1);
+            document.getElementById("footerText").innerHTML = `Copyright &copy; ${x[0]} - Your Current IP is {{ip}}`;
 
         }).catch(()=> {
             var d =new date();
-            document.getElementById("footerText").innerHTML = `Copyright &copy; ${d.getFullYear()} - Your Current IP is {{ip}}`
+            document.getElementById("footerText").innerHTML = `Copyright &copy; ${d.getFullYear()} - Your Current IP is {{ip}}`;
         })
         
     </script>
